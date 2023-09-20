@@ -2,15 +2,17 @@ package com.example.deleteafterclone3
 
 import android.R
 import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.TimePicker
 import android.widget.Toast
 import com.example.deleteafterclone3.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
+class MainActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
     private lateinit var binding:ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +34,10 @@ class MainActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
             btnShowCalendar.setOnClickListener {
                 val datePicker = DatePicker()
                 datePicker.show(supportFragmentManager, "datePicker")
+            }
+            btnShowTime.setOnClickListener {
+                val timePicker = TimePicker()
+                timePicker.show(supportFragmentManager, "timePicker")
             }
 
             timePicker.setOnTimeChangedListener { _, hoursOfDay, minute ->
@@ -88,6 +94,14 @@ class MainActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
         Toast.makeText(
             this@MainActivity,
             selectedDate, Toast.LENGTH_SHORT
+        ).show()
+    }
+
+    override fun onTimeSet(p0: TimePicker?, p1: Int, p2: Int) {
+        val selectedTime = "$p2:$p1"
+        Toast.makeText(
+            this@MainActivity,
+            selectedTime, Toast.LENGTH_SHORT
         ).show()
     }
 }
