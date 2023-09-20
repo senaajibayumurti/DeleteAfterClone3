@@ -1,6 +1,7 @@
 package com.example.deleteafterclone3
 
 import android.R
+import android.app.DatePickerDialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -9,7 +10,7 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import com.example.deleteafterclone3.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
     private lateinit var binding:ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +28,32 @@ class MainActivity : AppCompatActivity() {
 
         //Memasukkan val provinsi ke spinner
         with(binding){
+
+            btnShowCalendar.setOnClickListener {
+                val datePicker = DatePicker()
+                datePicker.show(supportFragmentManager, "datePicker")
+            }
+
+            timePicker.setOnTimeChangedListener { _, hoursOfDay, minute ->
+                val selectedTime = "$hoursOfDay:$minute"
+                Toast.makeText(
+                    this@MainActivity,
+                    selectedTime, Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            datePicker.init(
+                datePicker.year,
+                datePicker.month,
+                datePicker.dayOfMonth
+            ){_, year, month, dayOfMonth ->
+                val selectedDate = "$dayOfMonth ${month} $year"
+                Toast.makeText(
+                    this@MainActivity,
+                    selectedDate, Toast.LENGTH_SHORT
+                ).show()
+            }
+
             val adapterProvinsi = ArrayAdapter<String>(this@MainActivity,
             R.layout.simple_spinner_item, provinsi)
             spinnerProvinsi.adapter = adapterProvinsi
@@ -55,5 +82,12 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
         }
+    }
+    override fun onDateSet(p0: android.widget.DatePicker?, p1: Int, p2: Int, p3: Int) {
+        val selectedDate = "$p3/${p2 + 1}/$p1"
+        Toast.makeText(
+            this@MainActivity,
+            selectedDate, Toast.LENGTH_SHORT
+        ).show()
     }
 }
